@@ -1,5 +1,38 @@
 {
+  "AWSTemplateFormatVersion": "2010-09-09",
   "Resources": {
+    "S3B42WBC": {
+      "Type": "AWS::S3::Bucket",
+      "Properties": {}
+      }
+    },
+    "CTT1AZQC": {
+      "Type": "AWS::CloudTrail::Trail",
+      "Properties": {
+        "CloudWatchLogsRoleArn": {
+          "Fn::GetAtt": [
+            "CloudTrailRole",
+            "Arn"
+          ]
+        },
+        "CloudWatchLogsLogGroupArn": {
+          "Fn::GetAtt": [
+            "LLG39AOL",
+            "Arn"
+          ]
+        },
+        "EnableLogFileValidation": true,
+        "IncludeGlobalServiceEvents": true,
+        "IsLogging": true,
+        "IsMultiRegionTrail": true,
+        "S3BucketName": {
+          "Ref": "S3B42WBC"
+        }
+      },
+      "DependsOn": [
+        "S3B42WBC"
+      ]
+    },
     "S3BP3BLA0": {
       "Type": "AWS::S3::BucketPolicy",
       "Properties": {
@@ -58,6 +91,53 @@
             }
           ]
         }
+      }
+    },
+    "LLG39AOL": {
+      "Type": "AWS::Logs::LogGroup",
+      "Properties": {
+        "RetentionInDays": 1
+      }
+    },
+    "CloudTrailRole": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Principal": {
+                "Service": [
+                  "cloudtrail.amazonaws.com"
+                ]
+              },
+              "Action": [
+                "sts:AssumeRole"
+              ]
+            }
+          ]
+        },
+        "Path": "/",
+        "Policies": [
+          {
+            "PolicyName": "root",
+            "PolicyDocument": {
+              "Version": "2012-10-17",
+              "Statement": [
+                {
+                  "Effect": "Allow",
+                  "Action": [
+                    "logs:CreateLogGroup",
+                    "logs:CreateLogStream",
+                    "logs:PutLogEvents"
+                  ],
+                  "Resource": "arn:aws:logs:*:*:*"
+                }
+              ]
+            }
+          }
+        ]
       }
     }
   }
