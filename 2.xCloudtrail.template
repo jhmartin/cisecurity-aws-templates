@@ -1,9 +1,113 @@
 {
   "AWSTemplateFormatVersion": "2010-09-09",
+  "Metadata": {
+    "AWS::CloudFormation::Designer": {
+      "f700037a-b1cd-40cc-968f-c67ea5a2d96f": {
+        "size": {
+          "width": 60,
+          "height": 60
+        },
+        "position": {
+          "x": 250,
+          "y": 90
+        },
+        "z": 0,
+        "embeds": []
+      },
+      "64c3dde7-b5e8-4d62-ab93-5befac3f7abf": {
+        "size": {
+          "width": 60,
+          "height": 60
+        },
+        "position": {
+          "x": 119,
+          "y": 97
+        },
+        "z": 0,
+        "embeds": [],
+        "dependson": [
+          "f700037a-b1cd-40cc-968f-c67ea5a2d96f"
+        ],
+        "isrelatedto": [
+          "f700037a-b1cd-40cc-968f-c67ea5a2d96f",
+          "70af2c40-d0b5-48e0-9249-23ebde2f51e8",
+          "25438732-8a2a-4466-b2fa-542abf3ee7b1",
+          "037df153-f606-42a0-b774-d8766e37951f"
+        ]
+      },
+      "c02b09f8-2f2c-4f78-8774-366ea0b72bfd": {
+        "source": {
+          "id": "64c3dde7-b5e8-4d62-ab93-5befac3f7abf"
+        },
+        "target": {
+          "id": "f700037a-b1cd-40cc-968f-c67ea5a2d96f"
+        },
+        "z": 1
+      },
+      "0c8840c5-ee26-4701-8de9-0441b8914d5c": {
+        "size": {
+          "width": 60,
+          "height": 60
+        },
+        "position": {
+          "x": 340,
+          "y": 130
+        },
+        "z": 0,
+        "embeds": [],
+        "isassociatedwith": [
+          "f700037a-b1cd-40cc-968f-c67ea5a2d96f"
+        ]
+      },
+      "70af2c40-d0b5-48e0-9249-23ebde2f51e8": {
+        "size": {
+          "width": 140,
+          "height": 140
+        },
+        "position": {
+          "x": 80,
+          "y": 190
+        },
+        "z": 0,
+        "embeds": []
+      },
+      "25438732-8a2a-4466-b2fa-542abf3ee7b1": {
+        "size": {
+          "width": 60,
+          "height": 60
+        },
+        "position": {
+          "x": -110.72352118271051,
+          "y": 170.18823147519657
+        },
+        "z": 0,
+        "embeds": [],
+        "isrelatedto": [
+          "70af2c40-d0b5-48e0-9249-23ebde2f51e8"
+        ]
+      },
+      "037df153-f606-42a0-b774-d8766e37951f": {
+        "size": {
+          "width": 60,
+          "height": 60
+        },
+        "position": {
+          "x": -203.80515462748852,
+          "y": 268.1131978983898
+        },
+        "z": 0,
+        "embeds": []
+      }
+    }
+  },
   "Resources": {
     "S3B42WBC": {
       "Type": "AWS::S3::Bucket",
-      "Properties": {}
+      "Properties": {},
+      "Metadata": {
+        "AWS::CloudFormation::Designer": {
+          "id": "f700037a-b1cd-40cc-968f-c67ea5a2d96f"
+        }
       }
     },
     "CTT1AZQC": {
@@ -24,9 +128,17 @@
         "EnableLogFileValidation": true,
         "IncludeGlobalServiceEvents": true,
         "IsLogging": true,
+        "KMSKeyId": {
+          "Ref": "CloudTrailKey"
+        },
         "IsMultiRegionTrail": true,
         "S3BucketName": {
           "Ref": "S3B42WBC"
+        }
+      },
+      "Metadata": {
+        "AWS::CloudFormation::Designer": {
+          "id": "64c3dde7-b5e8-4d62-ab93-5befac3f7abf"
         }
       },
       "DependsOn": [
@@ -91,12 +203,22 @@
             }
           ]
         }
+      },
+      "Metadata": {
+        "AWS::CloudFormation::Designer": {
+          "id": "0c8840c5-ee26-4701-8de9-0441b8914d5c"
+        }
       }
     },
     "LLG39AOL": {
       "Type": "AWS::Logs::LogGroup",
       "Properties": {
         "RetentionInDays": 1
+      },
+      "Metadata": {
+        "AWS::CloudFormation::Designer": {
+          "id": "70af2c40-d0b5-48e0-9249-23ebde2f51e8"
+        }
       }
     },
     "CloudTrailRole": {
@@ -138,6 +260,117 @@
             }
           }
         ]
+      },
+      "Metadata": {
+        "AWS::CloudFormation::Designer": {
+          "id": "25438732-8a2a-4466-b2fa-542abf3ee7b1"
+        }
+      }
+    },
+    "CloudTrailKey": {
+      "Type": "AWS::KMS::Key",
+      "Properties": {
+        "Description": "CloudTrail At-Rest Key",
+        "Enabled": true,
+        "EnableKeyRotation": true,
+        "KeyPolicy": {
+          "Version": "2012-10-17",
+          "Id": "Key policy created by CloudTrail",
+          "Statement": [
+            {
+              "Sid": "Enable IAM User Permissions",
+              "Effect": "Allow",
+              "Principal": {
+                "AWS": "arn:aws:iam::958320089221:root"
+              },
+              "Action": "kms:*",
+              "Resource": "*"
+            },
+            {
+              "Sid": "Allow CloudTrail to encrypt logs",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "cloudtrail.amazonaws.com"
+              },
+              "Action": "kms:GenerateDataKey*",
+              "Resource": "*",
+              "Condition": {
+                "StringLike": {
+                  "kms:EncryptionContext:aws:cloudtrail:arn": "arn:aws:cloudtrail:*:958320089221:trail/*"
+                }
+              }
+            },
+            {
+              "Sid": "Allow CloudTrail to describe key",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "cloudtrail.amazonaws.com"
+              },
+              "Action": "kms:DescribeKey",
+              "Resource": "*"
+            },
+            {
+              "Sid": "Allow principals in the account to decrypt log files",
+              "Effect": "Allow",
+              "Principal": {
+                "AWS": "*"
+              },
+              "Action": [
+                "kms:Decrypt",
+                "kms:ReEncryptFrom"
+              ],
+              "Resource": "*",
+              "Condition": {
+                "StringEquals": {
+                  "kms:CallerAccount": "958320089221"
+                },
+                "StringLike": {
+                  "kms:EncryptionContext:aws:cloudtrail:arn": "arn:aws:cloudtrail:*:958320089221:trail/*"
+                }
+              }
+            },
+            {
+              "Sid": "Allow alias creation during setup",
+              "Effect": "Allow",
+              "Principal": {
+                "AWS": "*"
+              },
+              "Action": "kms:CreateAlias",
+              "Resource": "*",
+              "Condition": {
+                "StringEquals": {
+                  "kms:ViaService": "ec2.us-west-2.amazonaws.com",
+                  "kms:CallerAccount": "958320089221"
+                }
+              }
+            },
+            {
+              "Sid": "Enable cross account log decryption",
+              "Effect": "Allow",
+              "Principal": {
+                "AWS": "*"
+              },
+              "Action": [
+                "kms:Decrypt",
+                "kms:ReEncryptFrom"
+              ],
+              "Resource": "*",
+              "Condition": {
+                "StringEquals": {
+                  "kms:CallerAccount": "958320089221"
+                },
+                "StringLike": {
+                  "kms:EncryptionContext:aws:cloudtrail:arn": "arn:aws:cloudtrail:*:958320089221:trail/*"
+                }
+              }
+            }
+          ]
+        }
+      },
+      "Metadata": {
+        "AWS::CloudFormation::Designer": {
+          "id": "037df153-f606-42a0-b774-d8766e37951f"
+        }
       }
     }
   }
