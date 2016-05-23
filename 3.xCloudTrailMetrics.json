@@ -1,0 +1,487 @@
+{
+    "AWSTemplateFormatVersion": "2010-09-09",
+    "Resources": {
+        "3x10Alarm": {
+            "DependsOn": [
+                "3x10SecurityGroupChangeMetric"
+            ],
+            "Properties": {
+                "AlarmActions": [
+                    {
+                        "Ref": "AlarmTopic"
+                    }
+                ],
+                "ComparisonOperator": "GreaterThanOrEqualToThreshold",
+                "EvaluationPeriods": "1",
+                "MetricName": "SecurityGroupChanges",
+                "Namespace": "CloudTrail/SecurityMetrics",
+                "Period": "60",
+                "Statistic": "Sum",
+                "Threshold": "1"
+            },
+            "Type": "AWS::CloudWatch::Alarm"
+        },
+        "3x10SecurityGroupChangeMetric": {
+            "Properties": {
+                "FilterPattern": "{ ($.eventName = AuthorizeSecurityGroupIngress) || ($.eventName = AuthorizeSecurityGroupEgress) || ($.eventName = RevokeSecurityGroupIngress) || ($.eventName = RevokeSecurityGroupEgress) || ($.eventName = CreateSecurityGroup) || ($.eventName = DeleteSecurityGroup)}",
+                "LogGroupName": "CISecurityCloudTrail-LLG39AOL-A9H2H67VMYE8",
+                "MetricTransformations": [
+                    {
+                        "MetricName": "SecurityGroupChanges",
+                        "MetricNamespace": "CloudTrail/SecurityMetrics",
+                        "MetricValue": "1"
+                    }
+                ]
+            },
+            "Type": "AWS::Logs::MetricFilter"
+        },
+        "3x11Alarm": {
+            "DependsOn": [
+                "3x11NACLChangeMetric"
+            ],
+            "Properties": {
+                "AlarmActions": [
+                    {
+                        "Ref": "AlarmTopic"
+                    }
+                ],
+                "ComparisonOperator": "GreaterThanOrEqualToThreshold",
+                "EvaluationPeriods": "1",
+                "MetricName": "NACLChanges",
+                "Namespace": "CloudTrail/SecurityMetrics",
+                "Period": "60",
+                "Statistic": "Sum",
+                "Threshold": "1"
+            },
+            "Type": "AWS::CloudWatch::Alarm"
+        },
+        "3x11NACLChangeMetric": {
+            "Properties": {
+                "FilterPattern": "{ ($.eventName = CreateNetworkAcl) || ($.eventName = CreateNetworkAclEntry) || ($.eventName = DeleteNetworkAcl) || ($.eventName = DeleteNetworkAclEntry) || ($.eventName = ReplaceNetworkAclEntry) || ($.eventName = ReplaceNetworkAclAssociation) }",
+                "LogGroupName": "CISecurityCloudTrail-LLG39AOL-A9H2H67VMYE8",
+                "MetricTransformations": [
+                    {
+                        "MetricName": "NACLChanges",
+                        "MetricNamespace": "CloudTrail/SecurityMetrics",
+                        "MetricValue": "1"
+                    }
+                ]
+            },
+            "Type": "AWS::Logs::MetricFilter"
+        },
+        "3x12Alarm": {
+            "DependsOn": [
+                "3x12NetworkChangeMetric"
+            ],
+            "Properties": {
+                "AlarmActions": [
+                    {
+                        "Ref": "AlarmTopic"
+                    }
+                ],
+                "ComparisonOperator": "GreaterThanOrEqualToThreshold",
+                "EvaluationPeriods": "1",
+                "MetricName": "NetworkChanges",
+                "Namespace": "CloudTrail/SecurityMetrics",
+                "Period": "60",
+                "Statistic": "Sum",
+                "Threshold": "1"
+            },
+            "Type": "AWS::CloudWatch::Alarm"
+        },
+        "3x12NetworkChangeMetric": {
+            "Properties": {
+                "FilterPattern": "{ ($.eventName = CreateCustomerGateway) || ($.eventName = DeleteCustomerGateway) || ($.eventName = AttachInternetGateway) || ($.eventName = CreateInternetGateway) || ($.eventName = DeleteInternetGateway) || ($.eventName = DetachInternetGateway) }",
+                "LogGroupName": "CISecurityCloudTrail-LLG39AOL-A9H2H67VMYE8",
+                "MetricTransformations": [
+                    {
+                        "MetricName": "NetworkChanges",
+                        "MetricNamespace": "CloudTrail/SecurityMetrics",
+                        "MetricValue": "1"
+                    }
+                ]
+            },
+            "Type": "AWS::Logs::MetricFilter"
+        },
+        "3x13Alarm": {
+            "DependsOn": [
+                "3x13RouteTableChangeMetric"
+            ],
+            "Properties": {
+                "AlarmActions": [
+                    {
+                        "Ref": "AlarmTopic"
+                    }
+                ],
+                "ComparisonOperator": "GreaterThanOrEqualToThreshold",
+                "EvaluationPeriods": "1",
+                "MetricName": "RouteTableChanges",
+                "Namespace": "CloudTrail/SecurityMetrics",
+                "Period": "60",
+                "Statistic": "Sum",
+                "Threshold": "1"
+            },
+            "Type": "AWS::CloudWatch::Alarm"
+        },
+        "3x13RouteTableChangeMetric": {
+            "Properties": {
+                "FilterPattern": "{ ($.eventName = CreateRoute) || ($.eventName = CreateRouteTable) || ($.eventName = ReplaceRoute) || ($.eventName = ReplaceRouteTableAssociation) || ($.eventName = DeleteRouteTable) || ($.eventName = DeleteRoute) || ($.eventName = DisassociateRouteTable) }",
+                "LogGroupName": "CISecurityCloudTrail-LLG39AOL-A9H2H67VMYE8",
+                "MetricTransformations": [
+                    {
+                        "MetricName": "RouteTableChanges",
+                        "MetricNamespace": "CloudTrail/SecurityMetrics",
+                        "MetricValue": "1"
+                    }
+                ]
+            },
+            "Type": "AWS::Logs::MetricFilter"
+        },
+        "3x14Alarm": {
+            "DependsOn": [
+                "3x14VPCChangeMetric"
+            ],
+            "Properties": {
+                "AlarmActions": [
+                    {
+                        "Ref": "AlarmTopic"
+                    }
+                ],
+                "ComparisonOperator": "GreaterThanOrEqualToThreshold",
+                "EvaluationPeriods": "1",
+                "MetricName": "VPCChanges",
+                "Namespace": "CloudTrail/SecurityMetrics",
+                "Period": "60",
+                "Statistic": "Sum",
+                "Threshold": "1"
+            },
+            "Type": "AWS::CloudWatch::Alarm"
+        },
+        "3x14VPCChangeMetric": {
+            "Properties": {
+                "FilterPattern": "{ ($.eventName = CreateVpc) || ($.eventName = DeleteVpc) || ($.eventName = ModifyVpcAttribute) || ($.eventName = AcceptVpcPeeringConnection) || ($.eventName = CreateVpcPeeringConnection) || ($.eventName = DeleteVpcPeeringConnection) || ($.eventName = RejectVpcPeeringConnection) || ($.eventName = AttachClassicLinkVpc) || ($.eventName = DetachClassicLinkVpc) || ($.eventName = DisableVpcClassicLink) || ($.eventName = EnableVpcClassicLink) }",
+                "LogGroupName": "CISecurityCloudTrail-LLG39AOL-A9H2H67VMYE8",
+                "MetricTransformations": [
+                    {
+                        "MetricName": "VPCChanges",
+                        "MetricNamespace": "CloudTrail/SecurityMetrics",
+                        "MetricValue": "1"
+                    }
+                ]
+            },
+            "Type": "AWS::Logs::MetricFilter"
+        },
+        "3x1Alarm": {
+            "DependsOn": [
+                "3x1DeniedMetricFilter"
+            ],
+            "Properties": {
+                "AlarmActions": [
+                    {
+                        "Ref": "AlarmTopic"
+                    }
+                ],
+                "ComparisonOperator": "GreaterThanOrEqualToThreshold",
+                "EvaluationPeriods": "1",
+                "MetricName": "APIDeniedCount",
+                "Namespace": "CloudTrail/SecurityMetrics",
+                "Period": "60",
+                "Statistic": "Sum",
+                "Threshold": "1"
+            },
+            "Type": "AWS::CloudWatch::Alarm"
+        },
+        "3x1DeniedMetricFilter": {
+            "Properties": {
+                "FilterPattern": "{ ($.errorCode = \"*UnauthorizedOperation\") || ($.errorCode = \"AccessDenied*\") }",
+                "LogGroupName": "CISecurityCloudTrail-LLG39AOL-A9H2H67VMYE8",
+                "MetricTransformations": [
+                    {
+                        "MetricName": "APIDeniedCount",
+                        "MetricNamespace": "CloudTrail/SecurityMetrics",
+                        "MetricValue": "1"
+                    }
+                ]
+            },
+            "Type": "AWS::Logs::MetricFilter"
+        },
+        "3x2Alarm": {
+            "DependsOn": [
+                "3x2NonMFALoginMetric"
+            ],
+            "Properties": {
+                "AlarmActions": [
+                    {
+                        "Ref": "AlarmTopic"
+                    }
+                ],
+                "ComparisonOperator": "GreaterThanOrEqualToThreshold",
+                "EvaluationPeriods": "1",
+                "MetricName": "NonMFALogins",
+                "Namespace": "CloudTrail/SecurityMetrics",
+                "Period": "60",
+                "Statistic": "Sum",
+                "Threshold": "1"
+            },
+            "Type": "AWS::CloudWatch::Alarm"
+        },
+        "3x2NonMFALoginMetric": {
+            "Properties": {
+                "FilterPattern": "{ $.userIdentity.sessionContext.attributes.mfaAuthenticated != \"true\" }",
+                "LogGroupName": "CISecurityCloudTrail-LLG39AOL-A9H2H67VMYE8",
+                "MetricTransformations": [
+                    {
+                        "MetricName": "NonMFALogins",
+                        "MetricNamespace": "CloudTrail/SecurityMetrics",
+                        "MetricValue": "1"
+                    }
+                ]
+            },
+            "Type": "AWS::Logs::MetricFilter"
+        },
+        "3x3Alarm": {
+            "DependsOn": [
+                "3x3RootLoginsMetric"
+            ],
+            "Properties": {
+                "AlarmActions": [
+                    {
+                        "Ref": "AlarmTopic"
+                    }
+                ],
+                "ComparisonOperator": "GreaterThanOrEqualToThreshold",
+                "EvaluationPeriods": "1",
+                "MetricName": "RootLogins",
+                "Namespace": "CloudTrail/SecurityMetrics",
+                "Period": "60",
+                "Statistic": "Sum",
+                "Threshold": "1"
+            },
+            "Type": "AWS::CloudWatch::Alarm"
+        },
+        "3x3RootLoginsMetric": {
+            "Properties": {
+                "FilterPattern": "{ $.userIdentity.type = \"Root\" && $.userIdentity.invokedBy NOT EXISTS && $.eventType != \"AwsServiceEvent\" }",
+                "LogGroupName": "CISecurityCloudTrail-LLG39AOL-A9H2H67VMYE8",
+                "MetricTransformations": [
+                    {
+                        "MetricName": "RootLogins",
+                        "MetricNamespace": "CloudTrail/SecurityMetrics",
+                        "MetricValue": "1"
+                    }
+                ]
+            },
+            "Type": "AWS::Logs::MetricFilter"
+        },
+        "3x4Alarm": {
+            "DependsOn": [
+                "3x4IAMPolicyChangeMetric"
+            ],
+            "Properties": {
+                "AlarmActions": [
+                    {
+                        "Ref": "AlarmTopic"
+                    }
+                ],
+                "ComparisonOperator": "GreaterThanOrEqualToThreshold",
+                "EvaluationPeriods": "1",
+                "MetricName": "IAMPolicyChanges",
+                "Namespace": "CloudTrail/SecurityMetrics",
+                "Period": "60",
+                "Statistic": "Sum",
+                "Threshold": "1"
+            },
+            "Type": "AWS::CloudWatch::Alarm"
+        },
+        "3x4IAMPolicyChangeMetric": {
+            "Properties": {
+                "FilterPattern": "{($.eventName=DeleteGroupPolicy)||($.eventName=DeleteRolePolicy)||($.eventName=DeleteUserPolicy)||($.eventName=PutGroupPolicy)||($.eventName=PutRolePolicy)||($.eventName=PutUserPolicy)||($.eventName=CreatePolicy)||($.eventName=DeletePolicy)||($.eventName=CreatePolicyVersion)||($.eventName=DeletePolicyVersion)||($.eventName=AttachRolePolicy)||($.eventName=DetachRolePolicy)||($.eventName=AttachUserPolicy)||($.eventName=DetachUserPolicy)||($.eventName=AttachGroupPolicy)||($.eventName=DetachGroupPolicy)}",
+                "LogGroupName": "CISecurityCloudTrail-LLG39AOL-A9H2H67VMYE8",
+                "MetricTransformations": [
+                    {
+                        "MetricName": "IAMPolicyChanges",
+                        "MetricNamespace": "CloudTrail/SecurityMetrics",
+                        "MetricValue": "1"
+                    }
+                ]
+            },
+            "Type": "AWS::Logs::MetricFilter"
+        },
+        "3x5Alarm": {
+            "DependsOn": [
+                "3x5CloudTrailChangeMetric"
+            ],
+            "Properties": {
+                "AlarmActions": [
+                    {
+                        "Ref": "AlarmTopic"
+                    }
+                ],
+                "ComparisonOperator": "GreaterThanOrEqualToThreshold",
+                "EvaluationPeriods": "1",
+                "MetricName": "CloudTrailChanges",
+                "Namespace": "CloudTrail/SecurityMetrics",
+                "Period": "60",
+                "Statistic": "Sum",
+                "Threshold": "1"
+            },
+            "Type": "AWS::CloudWatch::Alarm"
+        },
+        "3x5CloudTrailChangeMetric": {
+            "Properties": {
+                "FilterPattern": "{ ($.eventName = CreateTrail) || ($.eventName = UpdateTrail) || ($.eventName = DeleteTrail) || ($.eventName = StartLogging) || ($.eventName = StopLogging) }",
+                "LogGroupName": "CISecurityCloudTrail-LLG39AOL-A9H2H67VMYE8",
+                "MetricTransformations": [
+                    {
+                        "MetricName": "CloudTrailChanges",
+                        "MetricNamespace": "CloudTrail/SecurityMetrics",
+                        "MetricValue": "1"
+                    }
+                ]
+            },
+            "Type": "AWS::Logs::MetricFilter"
+        },
+        "3x6Alarm": {
+            "DependsOn": [
+                "3x6ConsoleFailedLoginMetric"
+            ],
+            "Properties": {
+                "AlarmActions": [
+                    {
+                        "Ref": "AlarmTopic"
+                    }
+                ],
+                "ComparisonOperator": "GreaterThanOrEqualToThreshold",
+                "EvaluationPeriods": "1",
+                "MetricName": "NonMFALogins",
+                "Namespace": "CloudTrail/SecurityMetrics",
+                "Period": "60",
+                "Statistic": "Sum",
+                "Threshold": "1"
+            },
+            "Type": "AWS::CloudWatch::Alarm"
+        },
+        "3x6ConsoleFailedLoginMetric": {
+            "Properties": {
+                "FilterPattern": "{ ($.eventName = ConsoleLogin) && ($.errorMessage = \"Failed authentication\") }",
+                "LogGroupName": "CISecurityCloudTrail-LLG39AOL-A9H2H67VMYE8",
+                "MetricTransformations": [
+                    {
+                        "MetricName": "ConsoleLoginFailures",
+                        "MetricNamespace": "CloudTrail/SecurityMetrics",
+                        "MetricValue": "1"
+                    }
+                ]
+            },
+            "Type": "AWS::Logs::MetricFilter"
+        },
+        "3x7Alarm": {
+            "DependsOn": [
+                "3x7KMSKeyDeletionMetric"
+            ],
+            "Properties": {
+                "AlarmActions": [
+                    {
+                        "Ref": "AlarmTopic"
+                    }
+                ],
+                "ComparisonOperator": "GreaterThanOrEqualToThreshold",
+                "EvaluationPeriods": "1",
+                "MetricName": "KMSKeysImperiled",
+                "Namespace": "CloudTrail/SecurityMetrics",
+                "Period": "60",
+                "Statistic": "Sum",
+                "Threshold": "1"
+            },
+            "Type": "AWS::CloudWatch::Alarm"
+        },
+        "3x7KMSKeyDeletionMetric": {
+            "Properties": {
+                "FilterPattern": "{ ($.eventSource = kms.amazonaws.com) && (($.eventName=DisableKey)||($.eventName=ScheduleKeyDeletion))}",
+                "LogGroupName": "CISecurityCloudTrail-LLG39AOL-A9H2H67VMYE8",
+                "MetricTransformations": [
+                    {
+                        "MetricName": "KMSKeysImperiled",
+                        "MetricNamespace": "CloudTrail/SecurityMetrics",
+                        "MetricValue": "1"
+                    }
+                ]
+            },
+            "Type": "AWS::Logs::MetricFilter"
+        },
+        "3x8Alarm": {
+            "DependsOn": [
+                "3x8BucketPolicyChangeMetric"
+            ],
+            "Properties": {
+                "AlarmActions": [
+                    {
+                        "Ref": "AlarmTopic"
+                    }
+                ],
+                "ComparisonOperator": "GreaterThanOrEqualToThreshold",
+                "EvaluationPeriods": "1",
+                "MetricName": "BucketPolicyChange",
+                "Namespace": "CloudTrail/SecurityMetrics",
+                "Period": "60",
+                "Statistic": "Sum",
+                "Threshold": "1"
+            },
+            "Type": "AWS::CloudWatch::Alarm"
+        },
+        "3x8BucketPolicyChangeMetric": {
+            "Properties": {
+                "FilterPattern": "{ $.userIdentity.type = \"Root\" && $.userIdentity.invokedBy NOT EXISTS && $.eventType != \"AwsServiceEvent\" }",
+                "LogGroupName": "CISecurityCloudTrail-LLG39AOL-A9H2H67VMYE8",
+                "MetricTransformations": [
+                    {
+                        "MetricName": "BucketPolicyChange",
+                        "MetricNamespace": "CloudTrail/SecurityMetrics",
+                        "MetricValue": "1"
+                    }
+                ]
+            },
+            "Type": "AWS::Logs::MetricFilter"
+        },
+        "3x9Alarm": {
+            "DependsOn": [
+                "3x9ConfigPolicyChanges"
+            ],
+            "Properties": {
+                "AlarmActions": [
+                    {
+                        "Ref": "AlarmTopic"
+                    }
+                ],
+                "ComparisonOperator": "GreaterThanOrEqualToThreshold",
+                "EvaluationPeriods": "1",
+                "MetricName": "AWSConfigChanges",
+                "Namespace": "CloudTrail/SecurityMetrics",
+                "Period": "60",
+                "Statistic": "Sum",
+                "Threshold": "1"
+            },
+            "Type": "AWS::CloudWatch::Alarm"
+        },
+        "3x9ConfigPolicyChanges": {
+            "Properties": {
+                "FilterPattern": "{($.eventSource = config.amazonaws.com) && (($.eventName=StopConfigurationRecorder)||($.eventName=DeleteDeliveryChannel)||($.eventName=PutDeliveryChannel)||($.eventName=PutConfigurationRecorder))}",
+                "LogGroupName": "CISecurityCloudTrail-LLG39AOL-A9H2H67VMYE8",
+                "MetricTransformations": [
+                    {
+                        "MetricName": "AWSConfigChanges",
+                        "MetricNamespace": "CloudTrail/SecurityMetrics",
+                        "MetricValue": "1"
+                    }
+                ]
+            },
+            "Type": "AWS::Logs::MetricFilter"
+        },
+        "AlarmTopic": {
+            "Properties": {
+                "DisplayName": "Security Alarm Topic"
+            },
+            "Type": "AWS::SNS::Topic"
+        }
+    }
+}
